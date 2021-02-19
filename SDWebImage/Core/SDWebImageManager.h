@@ -78,6 +78,7 @@ typedef void(^SDInternalCompletionBlock)(UIImage * _Nullable image, NSData * _Nu
  * It ties the asynchronous downloader (SDWebImageDownloader) with the image cache store (SDImageCache).
  * You can use this class directly to benefit from web image downloading with caching in another context than
  * a UIView.
+ * 管理异步下载类（SDWebImageDownloader）和图片缓存类（SDImageCache）
  *
  * Here is a simple example of how to use SDWebImageManager:
  *

@@ -74,10 +74,12 @@ static id<SDImageLoader> _defaultImageLoader;
 - (nonnull instancetype)init {
     id<SDImageCache> cache = [[self class] defaultImageCache];
     if (!cache) {
+        // 创建IO串行线程
         cache = [SDImageCache sharedImageCache];
     }
     id<SDImageLoader> loader = [[self class] defaultImageLoader];
     if (!loader) {
+        //异步下载器专用的和优化的图像加载类
         loader = [SDWebImageDownloader sharedDownloader];
     }
     return [self initWithCache:cache loader:loader];

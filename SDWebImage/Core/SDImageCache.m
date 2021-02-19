@@ -73,6 +73,7 @@ static NSString * _defaultDiskCacheDirectory;
         NSAssert(ns, @"Cache namespace should not be nil");
         
         // Create IO serial queue
+        // 创建IO串行线程
         _ioQueue = dispatch_queue_create("com.hackemist.SDImageCache", DISPATCH_QUEUE_SERIAL);
         
         if (!config) {

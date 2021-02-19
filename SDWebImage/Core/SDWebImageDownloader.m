@@ -195,6 +195,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
                                                   progress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
                                                  completed:(nullable SDWebImageDownloaderCompletedBlock)completedBlock {
     // The URL will be used as the key to the callbacks dictionary so it cannot be nil. If it is nil immediately call the completed block with no image or data.
+    //创建一个具有指定URL的SDWebImageDownloader异步下载实例
     if (url == nil) {
         if (completedBlock) {
             NSError *error = [NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorInvalidURL userInfo:@{NSLocalizedDescriptionKey : @"Image url is nil"}];
@@ -232,6 +233,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
         downloadOperationCancelToken = [operation addHandlersForProgress:progressBlock completed:completedBlock];
         // Add operation to operation queue only after all configuration done according to Apple's doc.
         // `addOperation:` does not synchronously execute the `operation.completionBlock` so this will not cause deadlock.
+        //开始下载线程：addOperation方法会调用SDWebImageDownloaderOperation（SDWebImageDownloaderOperation继承自NSOperation）的start方法
         [self.downloadQueue addOperation:operation];
     } else {
         // When we reuse the download operation to attach more callbacks, there may be thread safe issue because the getter of callbacks may in another queue (decoding queue or delegate queue)

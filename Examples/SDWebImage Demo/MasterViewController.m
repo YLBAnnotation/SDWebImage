@@ -101,7 +101,7 @@
     if (!placeholderImage) {
         placeholderImage = [UIImage imageNamed:@"placeholder"];
     }
-    
+    //默认加载动画使用的系统方法：UIActivityIndicatorView
     MyCustomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[MyCustomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
