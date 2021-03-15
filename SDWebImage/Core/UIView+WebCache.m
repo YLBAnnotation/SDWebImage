@@ -59,6 +59,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
     } else {
         context = [NSDictionary dictionary];
     }
+    //YLB:context是个NSDictionary
     NSString *validOperationKey = context[SDWebImageContextSetImageOperationKey];
     if (!validOperationKey) {
         // pass through the operation key to downstream, which can used for tracing operation or image view class

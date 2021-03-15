@@ -97,6 +97,7 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
     if (progressBlock) callbacks[kProgressCallbackKey] = [progressBlock copy];
     if (completedBlock) callbacks[kCompletedCallbackKey] = [completedBlock copy];
     @synchronized (self) {
+        //YLB:将放入字典的block添加进数组
         [self.callbackBlocks addObject:callbacks];
     }
     return callbacks;

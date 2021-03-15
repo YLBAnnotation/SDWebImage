@@ -209,6 +209,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     NSOperation<SDWebImageDownloaderOperation> *operation = [self.URLOperations objectForKey:url];
     // There is a case that the operation may be marked as finished or cancelled, but not been removed from `self.URLOperations`.
     if (!operation || operation.isFinished || operation.isCancelled) {
+        //YLB:创建operation
         operation = [self createDownloaderOperationWithUrl:url options:options context:context];
         if (!operation) {
             SD_UNLOCK(_operationsLock);
@@ -581,6 +582,7 @@ didReceiveResponse:(NSURLResponse *)response
     SDWebImageDownloaderOptions downloaderOptions = 0;
     if (options & SDWebImageLowPriority) downloaderOptions |= SDWebImageDownloaderLowPriority;
     if (options & SDWebImageProgressiveLoad) downloaderOptions |= SDWebImageDownloaderProgressiveLoad;
+    //YLB:设置options的代码
     if (options & SDWebImageRefreshCached) downloaderOptions |= SDWebImageDownloaderUseNSURLCache;
     if (options & SDWebImageContinueInBackground) downloaderOptions |= SDWebImageDownloaderContinueInBackground;
     if (options & SDWebImageHandleCookies) downloaderOptions |= SDWebImageDownloaderHandleCookies;
@@ -595,6 +597,7 @@ didReceiveResponse:(NSURLResponse *)response
     if (cachedImage && options & SDWebImageRefreshCached) {
         // force progressive off if image already cached but forced refreshing
         downloaderOptions &= ~SDWebImageDownloaderProgressiveLoad;
+        //YLB:设置options的代码
         // ignore image read from NSURLCache if image if cached but force refreshing
         downloaderOptions |= SDWebImageDownloaderIgnoreCachedResponse;
     }
