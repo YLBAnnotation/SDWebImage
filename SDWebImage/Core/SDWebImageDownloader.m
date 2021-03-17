@@ -195,7 +195,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
                                                   progress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
                                                  completed:(nullable SDWebImageDownloaderCompletedBlock)completedBlock {
     // The URL will be used as the key to the callbacks dictionary so it cannot be nil. If it is nil immediately call the completed block with no image or data.
-    //创建一个具有指定URL的SDWebImageDownloader异步下载实例
+    //YLB:创建一个具有指定URL的SDWebImageDownloader异步下载实例
     if (url == nil) {
         if (completedBlock) {
             NSError *error = [NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorInvalidURL userInfo:@{NSLocalizedDescriptionKey : @"Image url is nil"}];
@@ -270,6 +270,12 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
         timeoutInterval = 15.0;
     }
     
+    /*
+     1.NSURLRequestUseProtocolCachePolicy
+     默认的缓存策略， 如果缓存不存在，直接从服务端获取。如果缓存存在，会根据response中的Cache-Control字段判断下一步操作，如: Cache-Control字段为must-revalidata, 则询问服务端该数据是否有更新，无更新的话直接返回给用户缓存数据，若已更新，则请求服务端.它是由服务器决定客户端到底是用缓存还是不用缓存，根据Cache-Control来确定，如果过期或者数据被改动就不用缓存，直接加载服务端数据，一般在Get方法中才使用到缓存，Post变化比较多一般不使用缓存。
+     参考链接：https://www.jianshu.com/p/de5254cb1e40
+     */
+    
     // In order to prevent from potential duplicate caching (NSURLCache + SDImageCache) we disable the cache for image requests if told otherwise
     NSURLRequestCachePolicy cachePolicy = options & SDWebImageDownloaderUseNSURLCache ? NSURLRequestUseProtocolCachePolicy : NSURLRequestReloadIgnoringLocalCacheData;
     NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:cachePolicy timeoutInterval:timeoutInterval];
@@ -294,7 +300,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     } else {
         requestModifier = self.requestModifier;
     }
-    
+    //YLB:默认情况下 requestModifier 为空
     NSURLRequest *request;
     if (requestModifier) {
         NSURLRequest *modifiedRequest = [requestModifier modifiedRequestWithRequest:[mutableRequest copy]];
@@ -317,6 +323,8 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     if (responseModifier) {
         mutableContext[SDWebImageContextDownloadResponseModifier] = responseModifier;
     }
+    
+    //YLB:默认情况下 Decryptor(解密) 为空
     // Decryptor
     id<SDWebImageDownloaderDecryptor> decryptor;
     if ([context valueForKey:SDWebImageContextDownloadDecryptor]) {
@@ -362,6 +370,11 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
         // This can gurantee the new operation to be execulated firstly, even if when some operations finished, meanwhile you appending new operations
         // Just make last added operation dependents new operation can not solve this problem. See test case #test15DownloaderLIFOExecutionOrder
         for (NSOperation *pendingOperation in self.downloadQueue.operations) {
+            /*
+             参考：https://www.cnblogs.com/wendingding/p/3809150.html
+             NSOperation之间可以设置依赖来保证执行顺序，⽐如一定要让操作A执行完后,才能执行操作B,可以像下面这么写
+             [operationB addDependency:operationA]; // 操作B依赖于操作
+             */
             [pendingOperation addDependency:operation];
         }
     }
