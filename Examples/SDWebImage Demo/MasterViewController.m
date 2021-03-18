@@ -80,6 +80,7 @@
             // From http://r0k.us/graphics/kodak/, 768x512 resolution, 24 bit depth PNG
             [self.objects addObject:[NSString stringWithFormat:@"http://r0k.us/graphics/kodak/kodak/kodim%02d.png", i]];
         }
+        self.objects = [@[@"http://r0k.us/graphics/kodak/kodak/kodim01.png"] mutableCopy];
     }
     return self;
 }
