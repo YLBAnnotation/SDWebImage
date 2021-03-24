@@ -220,6 +220,11 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
             return nil;
         }
         @weakify(self);
+        /*
+         YLB
+         completionBlock:
+         The block to execute after the operation’s main task is completed.
+         */
         operation.completionBlock = ^{
             @strongify(self);
             if (!self) {
@@ -229,7 +234,9 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
             [self.URLOperations removeObjectForKey:url];
             SD_UNLOCK(self->_operationsLock);
         };
+        //YLB:把创建的SDWebImageDownloaderOperation放入字典
         self.URLOperations[url] = operation;
+        //YLB:建立completedBlock回调
         // Add the handlers before submitting to operation queue, avoid the race condition that operation finished before setting handlers.
         downloadOperationCancelToken = [operation addHandlersForProgress:progressBlock completed:completedBlock];
         // Add operation to operation queue only after all configuration done according to Apple's doc.

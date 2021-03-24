@@ -40,6 +40,7 @@ UIImage * _Nullable SDImageLoaderDecodeImageData(NSData * _Nonnull imageData, NS
         CGFloat dimension = ceil(sqrt(thumbnailPixels));
         thumbnailSizeValue = @(CGSizeMake(dimension, dimension));
     }
+    //YLB: context指定了字段 context:@{SDWebImageContextImageThumbnailPixelSize : @(CGSizeMake(180, 120))}
     if (context[SDWebImageContextImageThumbnailPixelSize]) {
         thumbnailSizeValue = context[SDWebImageContextImageThumbnailPixelSize];
     }
@@ -98,7 +99,7 @@ UIImage * _Nullable SDImageLoaderDecodeImageData(NSData * _Nonnull imageData, NS
     
     return image;
 }
-
+//YLB:加载图片
 UIImage * _Nullable SDImageLoaderDecodeProgressiveImageData(NSData * _Nonnull imageData, NSURL * _Nonnull imageURL, BOOL finished,  id<SDWebImageOperation> _Nonnull operation, SDWebImageOptions options, SDWebImageContext * _Nullable context) {
     NSCParameterAssert(imageData);
     NSCParameterAssert(imageURL);
@@ -114,6 +115,7 @@ UIImage * _Nullable SDImageLoaderDecodeProgressiveImageData(NSData * _Nonnull im
     }
     BOOL decodeFirstFrame = SD_OPTIONS_CONTAINS(options, SDWebImageDecodeFirstFrameOnly);
     NSNumber *scaleValue = context[SDWebImageContextImageScaleFactor];
+    //YLB:scale获取到的比较图大小
     CGFloat scale = scaleValue.doubleValue >= 1 ? scaleValue.doubleValue : SDImageScaleFactorForKey(cacheKey);
     NSNumber *preserveAspectRatioValue = context[SDWebImageContextImagePreserveAspectRatio];
     NSValue *thumbnailSizeValue;

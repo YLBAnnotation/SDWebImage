@@ -560,6 +560,7 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
     }
     self = [super init];
     if (self) {
+        //YLB: NSData转化为CGImageSourceRef
         CGImageSourceRef imageSource = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
         if (!imageSource) {
             return nil;
@@ -650,6 +651,7 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
         (__bridge NSString *)kCGImageSourceShouldCacheImmediately : @(YES),
         (__bridge NSString *)kCGImageSourceShouldCache : @(YES) // Always cache to reduce CPU usage
     };
+    //YLB:生成图片
     UIImage *image = [self.class createFrameAtIndex:index source:_imageSource scale:_scale preserveAspectRatio:_preserveAspectRatio thumbnailSize:_thumbnailSize options:options];
     if (!image) {
         return nil;

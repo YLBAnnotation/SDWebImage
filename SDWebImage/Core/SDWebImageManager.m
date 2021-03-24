@@ -660,6 +660,7 @@ static id<SDImageLoader> _defaultImageLoader;
     // Cache key filter from manager
     if (!context[SDWebImageContextCacheKeyFilter]) {
         id<SDWebImageCacheKeyFilter> cacheKeyFilter = self.cacheKeyFilter;
+        //YLB:设置SDWebImageContextCacheKeyFilter字段
         [mutableContext setValue:cacheKeyFilter forKey:SDWebImageContextCacheKeyFilter];
     }
     // Cache serializer from manager

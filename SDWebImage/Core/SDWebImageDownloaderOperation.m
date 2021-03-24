@@ -362,6 +362,7 @@ didReceiveResponse:(NSURLResponse *)response
     if (!self.imageData) {
         self.imageData = [[NSMutableData alloc] initWithCapacity:self.expectedSize];
     }
+    //YLB:添加网络数据（图片数据）
     [self.imageData appendData:data];
     
     self.receivedSize = self.imageData.length;
@@ -395,6 +396,7 @@ didReceiveResponse:(NSURLResponse *)response
         if (self.coderQueue.operationCount == 0) {
             // NSOperation have autoreleasepool, don't need to create extra one
             [self.coderQueue addOperationWithBlock:^{
+                //YLB:生成图片
                 UIImage *image = SDImageLoaderDecodeProgressiveImageData(imageData, self.request.URL, finished, self, [[self class] imageOptionsFromDownloaderOptions:self.options], self.context);
                 if (image) {
                     // We do not keep the progressive decoding image even when `finished`=YES. Because they are for view rendering but not take full function from downloader options. And some coders implementation may not keep consistent between progressive decoding and normal decoding.
@@ -555,6 +557,7 @@ didReceiveResponse:(NSURLResponse *)response
     dispatch_main_async_safe(^{
         for (SDWebImageDownloaderCompletedBlock completedBlock in completionBlocks) {
             completedBlock(image, imageData, error, finished);
+            NSLog(@"YLB: callCompletionBlocksWithImage method");
         }
     });
 }
